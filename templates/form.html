@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计算器</title>
+    <link href="../static/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+    <script src="{{ url_for('static', filename='jquery-3.2.1.min.js') }}"></script>
+</head>
+<body>
+<div class="container">
+    <form class="form-horizontal" style="margin-top:15px;">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">合同金额</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="hetong_jine" placeholder="合同金额" value="100000">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">支付方式</label>
+            <div class="col-sm-10">
+                <select class="form-control" name="zhifu_fangshi">
+                    <option value="0">期末等额本息</option>
+                    <option value="1">期末等本等息</option>
+                    <option value="2">期末减本减息</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">租赁期数</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="qishu" placeholder="租赁期数" value="12">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">年利率</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="year_lilv" placeholder="年利率" value="12">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">首期租金比率</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="shouqi_zujin_bilv" placeholder="首期租金比率" value="30">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">保证金比率</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="baozhengjin_bilv" placeholder="保证金比率" value="10">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">管理费比率</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="guanlifei_bilv" placeholder="管理费比率" value="1">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">留购价</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="liugoujia" placeholder="留购价" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">GPS费</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="gps" placeholder="GPS费" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">保险费</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="baoxianfei" placeholder="保险费" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">续保保证金</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="xubao_baozhengjin" placeholder="续保保证金" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">评估费</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="pinggufei" placeholder="评估费" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">提前结清</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="tiqian" placeholder="提前结清" value="0">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-default" onclick="submitData();">Sign in</button>
+            </div>
+        </div>
+    </form>
+
+    <h3>计算结果</h3>
+    <div id="content"></div>
+</div>
+
+<script>
+    function submitData() {
+        $.ajax({
+            url: 'calculator',
+            type: 'POST',
+            data: $("form").serialize(),
+            dataType: 'html',
+            success: function (data) {
+                $("#content").html(data);
+            }
+        });
+    }
+</script>
+</body>
+</html>
