@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: UTF-8 -*-
+
 from flask import Flask
 from flask import render_template
 from flask import request
@@ -27,11 +30,11 @@ def calculator():
     pinggufei = float(request.form['pinggufei'])
     tiqian = float(request.form['tiqian'])
 
-    shiji_rongzi_jine = hetong_jine * (1 - shouqi_zujin_bilv / 100)
+    shiji_rongzi_jine = hetong_jine * (1 - shouqi_zujin_bilv / 100.0)
     result += format_value("实际融资价值", shiji_rongzi_jine)
-    result += format_value("保证金", hetong_jine * baozhengjin_bilv / 100)
-    result += format_value("管理费", hetong_jine * guanlifei_bilv / 100)
-    shouqikuan = hetong_jine * (shouqi_zujin_bilv / 100 + baozhengjin_bilv / 100 + guanlifei_bilv / 100) + liugoujia \
+    result += format_value("保证金", hetong_jine * baozhengjin_bilv / 100.0)
+    result += format_value("管理费", hetong_jine * guanlifei_bilv / 100.0)
+    shouqikuan = hetong_jine * (shouqi_zujin_bilv / 100.0 + baozhengjin_bilv / 100.0 + guanlifei_bilv / 100.0) + liugoujia \
                  + gps + baoxianfei + xubao_baozhengjin + pinggufei
     result += format_value("首期款", shouqikuan)
 
@@ -46,14 +49,14 @@ def calculator():
         all_benjin = 0
         for i in range(1, qishu + 1):
             if tiqian != 0 and tiqian != qishu and tiqian == i:
-                lixi = 30 / 100 * year_lilv / 12 / 100 * shiji_rongzi_jine * (qishu - tiqian)
+                lixi = 30 / 100.0 * year_lilv / 12.0 / 100.0 * shiji_rongzi_jine * (qishu - tiqian)
                 zujin = shengyu_benjin + lixi
                 benjin = shengyu_benjin
             else:
-                zujin = (((1 + year_lilv / 12 / 100) ** qishu) * (year_lilv / 12 / 100) * shiji_rongzi_jine) / (
-                    (1 + year_lilv / 12 / 100) ** qishu - 1)
-                benjin = ((1 + year_lilv / 12 / 100) ** (i - 1) * (year_lilv / 12 / 100) * shiji_rongzi_jine) / (
-                    (1 + year_lilv / 12 / 100) ** qishu - 1)
+                zujin = (((1 + year_lilv / 12.0 / 100.0) ** qishu) * (year_lilv / 12.0 / 100.0) * shiji_rongzi_jine) / (
+                    (1 + year_lilv / 12.0 / 100.0) ** qishu - 1)
+                benjin = ((1 + year_lilv / 12.0 / 100.0) ** (i - 1) * (year_lilv / 12.0 / 100.0) * shiji_rongzi_jine) / (
+                    (1 + year_lilv / 12.0 / 100.0) ** qishu - 1)
                 lixi = zujin - benjin
             shengyu_benjin -= benjin
             result += get_tr_content(i, zujin, benjin, lixi, shengyu_benjin)
@@ -66,12 +69,12 @@ def calculator():
 
     # 期末等本等息
     if zhifu_fangshi == 1:
-        all_lixi = shiji_rongzi_jine * year_lilv / 12 / 100 * qishu
+        all_lixi = shiji_rongzi_jine * year_lilv / 12.0 / 100.0 * qishu
         all_zujin = shiji_rongzi_jine + all_lixi
         shengyu_benjin = shiji_rongzi_jine
         for i in range(1, qishu + 1):
             if tiqian != 0 and tiqian != qishu and tiqian == i:
-                lixi = 30 / 100 * year_lilv / 12 / 100 * shiji_rongzi_jine * (qishu - tiqian)
+                lixi = 30 / 100.0 * year_lilv / 12.0 / 100.0 * shiji_rongzi_jine * (qishu - tiqian)
                 zujin = shengyu_benjin + lixi
                 benjin = shengyu_benjin
             else:
@@ -115,14 +118,14 @@ def calculator():
                 benjin_bili = 0
 
             if tiqian != 0 and tiqian != qishu and tiqian == i:
-                lixi = 30 / 100 * year_lilv / 12 / 100 * shiji_rongzi_jine * (qishu - tiqian)
+                lixi = 30 / 100.0 * year_lilv / 12.0 / 100.0 * shiji_rongzi_jine * (qishu - tiqian)
                 zujin = shengyu_benjin + lixi
                 benjin = shengyu_benjin
                 shengyu_benjin -= benjin
             else:
                 benjin = shiji_rongzi_jine * benjin_bili
                 shengyu_benjin -= benjin
-                lixi = shengyu_benjin * year_lilv / 12 / 100
+                lixi = shengyu_benjin * year_lilv / 12.0 / 100.0
                 zujin = benjin + lixi
 
             result += get_tr_content(i, zujin, benjin, lixi, shengyu_benjin)
@@ -178,4 +181,4 @@ def format_value(s, v):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host='0.0.0.0', port=8082)
