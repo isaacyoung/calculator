@@ -175,3 +175,7 @@ def format_str(s):
 
 def format_value(s, v):
     return '<p>' + s + ' = ' + str(v) + '</p><br>'
+
+
+if __name__ == "__main__":
+    app.run()
