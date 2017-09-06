@@ -35,7 +35,7 @@ def calculator():
     result += format_value("保证金", hetong_jine * baozhengjin_bilv / 100.0)
     result += format_value("管理费", hetong_jine * guanlifei_bilv / 100.0)
     shouqikuan = hetong_jine * (shouqi_zujin_bilv / 100.0 + baozhengjin_bilv / 100.0 + guanlifei_bilv / 100.0) + liugoujia \
-                 + gps + baoxianfei + xubao_baozhengjin + pinggufei
+                 + gps + baoxianfei + xubao_baozhengjin + pinggufei + hetong_jine * 0.01
     result += format_value("首期款", shouqikuan)
 
     result += '<table class="table">'
@@ -52,6 +52,8 @@ def calculator():
                 lixi = 30 / 100.0 * year_lilv / 12.0 / 100.0 * shiji_rongzi_jine * (qishu - tiqian)
                 zujin = shengyu_benjin + lixi
                 benjin = shengyu_benjin
+                # 实际租金
+                zujin = zujin - hetong_jine * baozhengjin_bilv / 100 * i / qishu
             else:
                 zujin = (((1 + year_lilv / 12.0 / 100.0) ** qishu) * (year_lilv / 12.0 / 100.0) * shiji_rongzi_jine) / (
                     (1 + year_lilv / 12.0 / 100.0) ** qishu - 1)
@@ -77,6 +79,8 @@ def calculator():
                 lixi = 30 / 100.0 * year_lilv / 12.0 / 100.0 * shiji_rongzi_jine * (qishu - tiqian)
                 zujin = shengyu_benjin + lixi
                 benjin = shengyu_benjin
+                # 实际租金
+                zujin = zujin - hetong_jine * baozhengjin_bilv / 100 * i / qishu
             else:
                 zujin = all_zujin / qishu
                 lixi = all_lixi / qishu
@@ -112,7 +116,8 @@ def calculator():
                     benjin_bili = 0.15
                     temp_bili += benjin_bili
                 elif 6 < i < qishu:
-                    benjin_bili = 0.1
+                    # benjin_bili = 0.1
+                    benjin_bili = 0.1 * (1 - temp_bili)
                     temp_bili += benjin_bili
             else:
                 benjin_bili = 0
@@ -122,6 +127,8 @@ def calculator():
                 zujin = shengyu_benjin + lixi
                 benjin = shengyu_benjin
                 shengyu_benjin -= benjin
+                # 实际租金
+                zujin = zujin - hetong_jine * baozhengjin_bilv / 100 * i / qishu
             else:
                 benjin = shiji_rongzi_jine * benjin_bili
                 shengyu_benjin -= benjin
